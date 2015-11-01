@@ -1,0 +1,18 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="Token.RefreshToken" table="refresh_token">
+        <id name="token_id" column="token_id" type="integer">
+            <generator class="increment" />
+
+        </id>
+
+        <property name="expair_app" column="expair_app" type="int" not-null="true" />
+        <property name="token" column="token" type="string" not-null="true"/>
+        <many-to-one name="id_client" class="Token.Client"/>
+        <many-to-one name="id_user" class="DAO.User"/>
+
+    </class>
+</hibernate-mapping>

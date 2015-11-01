@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDAO {
         session.getTransaction().begin();
 
         Query query=session.createQuery("from User where city=:city");
-        query.setParameter("city",city);
+        query.setParameter("city", city);
         List<User> listUser = query.list();
 
         session.getTransaction().commit();
@@ -140,6 +140,28 @@ public class UserDaoImpl implements UserDAO {
         return user;
 
     }
+
+    public boolean authentication(String email, String password){
+        if(!session.isOpen()){
+            session = sessionFactory.openSession();
+        }
+        session.getTransaction().begin();
+
+
+        Query query=session.createQuery("from User where (email=:email and password=:password)");
+        query.setParameter("email", email);
+        query.setParameter("password", password);
+        User user = (User)query.uniqueResult();
+
+        session.getTransaction().commit();
+        session.close();
+        if (user==null){
+            return false;
+        }return true;
+    }
+
+
+
 
     private double checkDouble(double rate) {
         if (rate==0){

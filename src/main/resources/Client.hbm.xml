@@ -1,0 +1,17 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="Token.Client" table="client">
+        <id name="id" column="id" type="integer">
+            <generator class="increment" />
+
+        </id>
+
+        <property name="random_id" column="random_id" type="string" not-null="true"/>
+        <property name="secret_id" column="secret_id" type="string" not-null="true"/>
+        <property name="grant_types" column="grant_types" type="string" not-null="true" />
+
+    </class>
+</hibernate-mapping>

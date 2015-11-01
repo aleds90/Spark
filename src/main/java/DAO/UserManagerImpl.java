@@ -31,5 +31,6 @@ public class UserManagerImpl implements UserManager {
     public List<User> getUserByRate(double rate){return  userDAO.getUserByRate(rate);}
     public List<User> getUserByAttributes(String nome, String surname, String city, double rate, String role){return userDAO.getUserByAttributes(nome, surname, city, rate, role);};
     public User getUserIfExist(String email, String password){return  userDAO.getUserIfExist(email, password);}
+    public boolean authentication(String email, String password){return userDAO.authentication(email,password);}
 
 }

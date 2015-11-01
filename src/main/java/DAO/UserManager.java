@@ -12,6 +12,7 @@ public interface UserManager {
     public List<User> getUserByRate(double rate);
     public List<User> getUserByAttributes(String nome, String surname, String city, double rate, String role);
     public User getUserIfExist(String email, String password);
+    public boolean authentication(String email, String password);
 
 
 }
