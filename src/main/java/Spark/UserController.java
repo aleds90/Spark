@@ -76,11 +76,20 @@ public class UserController {
 
             if (user != null){
                 if (checkSession(user.getEmail())){
-                    return "aldery in a session";
+                    return "already in a session";
                 }else{
-                    Session session = createSession(user, request.session(true));
-                    listSessions.add(session);
-                    return "login effettuato";
+                    Session session =  createSession(user, request.session(true));
+                    if (session.isNew()){
+                        listSessions.add(session);
+                    }
+                        else { Session session2 =  createSession(user, request.session(true));
+                        listSessions.add(session2);
+                    }
+
+                    for (int i = 0; i<listSessions.size();i++){
+                        System.out.println(listSessions.get(i).attribute("email").toString());}
+
+                        return "login effettuato";
                 }
             }return "email o password errate";
         }),json());
@@ -88,17 +97,11 @@ public class UserController {
     }
 
     private Session createSession(User user, Session newSession) {
-        Session session = newSession;
+        Session session  = newSession;
         session.attribute("email", user.getEmail());
         return session;
     }
 
-    private double check(String rate) {
-        if (rate==null){
-            return Double.MAX_VALUE;
-        }
-        return Double.parseDouble(rate);
-    }
 
     private boolean checkSession(String email){
 
@@ -108,5 +111,12 @@ public class UserController {
                 return true;
             }
         }return false;
+    }
+
+    private double check(String rate) {
+        if (rate==null){
+            return Double.MAX_VALUE;
+        }
+        return Double.parseDouble(rate);
     }
 }
