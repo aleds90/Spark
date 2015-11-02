@@ -2,6 +2,7 @@ package Spark;
 
 import DAO.User;
 import DAO.UserManagerImpl;
+import Token.TokenManager;
 import spark.Session;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ import static spark.Spark.*;
 public class UserController {
     private  List<Session> listSessions;
 
-    public UserController(final UserManagerImpl userManager){
+    public UserController(final UserManagerImpl userManager, final TokenManager tokenManager){
 
         listSessions = new ArrayList<Session>();
 
@@ -52,21 +53,14 @@ public class UserController {
             return "";
         }));
 
-        post("/getByCity",((request, response) -> {
-            List<User> list = userManager.getUserByCity(request.queryParams("city"));
 
-            return list;
+        before("/api/*", (request, response) -> {
+            if (!tokenManager.isTokenAtive(request.headers("Authorization"))) {
+                halt(401, "Non hai il permesso, stronzo!");
+            }
+        });
 
-        }), json());
-
-        post("/getByRate",((request, response) -> {
-            List<User> list = userManager.getUserByRate(Double.parseDouble(request.queryParams("rate")));
-
-            return list;
-
-        }), json());
-
-        post("/getFiltered", (request, response) -> {
+        post("/api/getFiltered", (request, response) -> {
             List<User> list = userManager.getUserByAttributes(request.queryParams("name"),request.queryParams("surname"), request.queryParams("city"), check(request.queryParams("rate")), request.queryParams("role"));
             return list;
         },json());
@@ -82,14 +76,14 @@ public class UserController {
                     if (session.isNew()){
                         listSessions.add(session);
                     }
-                        else { Session session2 =  createSession(user, request.session(true));
+                    else { Session session2 =  createSession(user, request.session(true));
                         listSessions.add(session2);
                     }
 
                     for (int i = 0; i<listSessions.size();i++){
                         System.out.println(listSessions.get(i).attribute("email").toString());}
 
-                        return "login effettuato";
+                    return "login effettuato";
                 }
             }return "email o password errate";
         }),json());

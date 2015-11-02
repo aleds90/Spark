@@ -8,7 +8,6 @@
             <generator class="increment" />
 
         </id>
-
         <property name="name" column="name" type="string" not-null="true"/>
         <property name="surname" column="surname" type="string" not-null="true"/>
         <property name="email" column="email" type="string" unique-key="key"/>
@@ -17,7 +16,5 @@
         <property name="role" column="role" type="string" not-null="true"/>
         <property name="city" column="city" type="string" not-null="true"/>
         <property name="rate" column="rate" type="double" not-null="true"/>
-
-
     </class>
 </hibernate-mapping>

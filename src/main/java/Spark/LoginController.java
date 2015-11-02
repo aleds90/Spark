@@ -1,7 +1,8 @@
 package Spark;
 
-
+import DAO.User;
 import DAO.UserManagerImpl;
+import Token.Client;
 import Token.ClientDAOImpl;
 import Token.TokenManager;
 
@@ -14,13 +15,16 @@ public class LoginController {
 
         post("/authorization", (request, response) -> {
 
-            boolean resultAuthorization = userManager.authentication(request.queryParams("email"), request.queryParams("password"));
-            boolean resultClient =  clientDAO.ClientAuth(request.queryParams("random_id"),request.queryParams("secret_id"),request.queryParams("grant_types"));
+            User user = userManager.getUserIfExist(request.queryParams("email"), request.queryParams("password"));
+            Client client =  clientDAO.ClientAuth(request.queryParams("random_id"),request.queryParams("secret_id"),request.queryParams("grant_types"));
 
-            if (resultAuthorization&&resultClient){
-//                tokenManager.createAccessToken(,userManager.getUser(request.queryParams("email")).getId_user())
+            if (user != null && client != null){
+                tokenManager.createAccessToken(user.getId_user(), client.getId());
+                tokenManager.createRefreshToken(user.getId_user(), client.getId());
 
-            }return "login errato error 401";
+                return "OK";
+            }
+            return "NO OK";
         });
     }
 }

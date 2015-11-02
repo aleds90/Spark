@@ -1,5 +1,6 @@
 package Token;
 
+
 import Hibernate.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,7 +14,7 @@ public class ClientDAOImpl {
         this.session= sessionFactory.openSession();
     }
 
-    public boolean ClientAuth(String random_id, String secret_id, String grand_types){
+    public Client ClientAuth(String random_id, String secret_id, String grand_types){
         if(!session.isOpen()){
             session = sessionFactory.openSession();
         }
@@ -27,7 +28,7 @@ public class ClientDAOImpl {
         session.getTransaction().commit();
         session.close();
 
-        if (client==null){return false;}
-        return true;
+        if (client==null){return null;}
+        return client;
     }
 }

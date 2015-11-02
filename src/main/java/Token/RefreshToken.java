@@ -1,5 +1,6 @@
 package Token;
 
+import java.sql.Timestamp;
 
 public class RefreshToken implements Token {
     private int token_id;
@@ -7,10 +8,10 @@ public class RefreshToken implements Token {
     private int id_client;
     //chiave esterna user
     private int id_user;
-    private int expair_app;
+    private Timestamp expair_app;
     private String token;
 
-    public RefreshToken(int id_client, int id_user, int expair_app, String token) {
+    public RefreshToken(int id_client, int id_user, Timestamp expair_app, String token) {
         this.id_client = id_client;
         this.id_user = id_user;
         this.expair_app = expair_app;
@@ -43,11 +44,11 @@ public class RefreshToken implements Token {
         this.id_user = id_user;
     }
 
-    public int getExpair_app() {
+    public Timestamp getExpair_app() {
         return expair_app;
     }
 
-    public void setExpair_app(int expair_app) {
+    public void setExpair_app(Timestamp expair_app) {
         this.expair_app = expair_app;
     }
 

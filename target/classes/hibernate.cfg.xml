@@ -21,6 +21,10 @@
         <property name="current_session_context_class">thread</property>
 
         <mapping resource="User.hbm.xml" />
+        <mapping resource="Client.hbm.xml" />
+        <mapping resource="RefreshToken.hbm.xml" />
+        <mapping resource="AccessToken.hbm.xml" />
+
 
         <!-- <mapping resource="com/mkyong/user/DBUser.hbm.xml"></mapping> -->
     </session-factory>

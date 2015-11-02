@@ -3,17 +3,18 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-<class name="Token.AccessToken" table="access_token">
-    <id name="token_id" column="token_id" type="integer">
-        <generator class="increment" />
+    <class name="Token.AccessToken" table="access_token">
+        <id name="token_id" column="token_id" type="integer">
+            <generator class="increment" />
 
-    </id>
+        </id>
 
-    <property name="expair_app" column="expair_app" type="int" not-null="true" />
-    <property name="token" column="token" type="string" not-null="true"/>
-    <many-to-one name="id_client" class="Token.Client"/>
-    <many-to-one name="id_user" class="DAO.User"/>
+        <property name="id_client" column="id_client" type="integer" not-null="true"/>
+        <property name="id_user" column="id_user" type="integer" not-null="true"/>
+        <property name="expair_app" column="expair_app" type="timestamp" not-null="true" />
+        <property name="token" column="token" type="string" not-null="true"/>
 
 
-</class>
+
+    </class>
 </hibernate-mapping>
