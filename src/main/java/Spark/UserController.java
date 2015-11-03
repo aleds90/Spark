@@ -1,5 +1,4 @@
 package Spark;
-
 import DAO.User;
 import DAO.UserManagerImpl;
 import Token.TokenManager;
@@ -14,15 +13,18 @@ import static Json.JsonUtil.json;
 import static spark.Spark.*;
 
 public class UserController {
-    private  List<Session> listSessions;
 
-    public UserController(final UserManagerImpl userManager, final TokenManager tokenManager){
+    public UserController(final UserManagerImpl userManager, final TokenManager tokenManager) {
 
-        listSessions = new ArrayList<Session>();
+
+        before("/api/*", (request, response) -> {
+            if (!tokenManager.isATokenActive(request.headers("Authorization"))) {
+                halt(403,"403");// dí al Client di andare su /authorization perö con Grand_Type Refresh(per aggiornate i Token)
+            }
+        });
 
         get("/users", (request, response) -> userManager.getAllUsers(), json());
         after((req, res) -> res.type("application/json"));
-
 
 
         post("/add", (request, response) -> {
@@ -54,61 +56,18 @@ public class UserController {
         }));
 
 
-        before("/api/*", (request, response) -> {
-            if (!tokenManager.isTokenAtive(request.headers("Authorization"))) {
-                halt(401, "Non hai il permesso, stronzo!");
-            }
-        });
-
         post("/api/getFiltered", (request, response) -> {
-            List<User> list = userManager.getUserByAttributes(request.queryParams("name"),request.queryParams("surname"), request.queryParams("city"), check(request.queryParams("rate")), request.queryParams("role"));
+            List<User> list = userManager.getUserByAttributes(request.queryParams("name"), request.queryParams("surname"), request.queryParams("city"), check(request.queryParams("rate")), request.queryParams("role"));
             return list;
-        },json());
+        }, json());
 
-        post("/checkLogin",((request, response) -> {
-            User user = userManager.getUserIfExist(request.queryParams("email"), request.queryParams("password"));
 
-            if (user != null){
-                if (checkSession(user.getEmail())){
-                    return "already in a session";
-                }else{
-                    Session session =  createSession(user, request.session(true));
-                    if (session.isNew()){
-                        listSessions.add(session);
-                    }
-                    else { Session session2 =  createSession(user, request.session(true));
-                        listSessions.add(session2);
-                    }
-
-                    for (int i = 0; i<listSessions.size();i++){
-                        System.out.println(listSessions.get(i).attribute("email").toString());}
-
-                    return "login effettuato";
-                }
-            }return "email o password errate";
-        }),json());
 
     }
 
-    private Session createSession(User user, Session newSession) {
-        Session session  = newSession;
-        session.attribute("email", user.getEmail());
-        return session;
-    }
-
-
-    private boolean checkSession(String email){
-
-        for (int i = 0; i<listSessions.size();i++){
-            System.out.println(listSessions.get(i).attribute("email").toString());
-            if ((listSessions.get(i).attribute("email")).toString().equals(email)){
-                return true;
-            }
-        }return false;
-    }
 
     private double check(String rate) {
-        if (rate==null){
+        if (rate == null) {
             return Double.MAX_VALUE;
         }
         return Double.parseDouble(rate);

@@ -1,6 +1,5 @@
 package Token;
 
-
 import java.sql.Timestamp;
 
 public class AccessToken implements Token {
@@ -18,7 +17,9 @@ public class AccessToken implements Token {
         this.expair_app = expair_app;
         this.token = token;
     }
-    public AccessToken() {}
+
+    public AccessToken() {
+    }
 
 
     public int getToken_id() {

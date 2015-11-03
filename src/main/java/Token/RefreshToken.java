@@ -18,7 +18,8 @@ public class RefreshToken implements Token {
         this.token = token;
     }
 
-    public RefreshToken(){}
+    public RefreshToken() {
+    }
 
     public int getToken_id() {
         return token_id;
